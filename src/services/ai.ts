@@ -21,12 +21,21 @@ export interface AIAnalysisResult {
   marketDemand: string;
 }
 
+export interface AISynthesisOptions {
+  extractionModel?: string;
+  synthesisModel?: string;
+}
+
 export class AIService {
   /**
    * Run the full AI analysis on scraped sources.
    * If API keys are missing, falls back to a high-fidelity heuristic generator.
    */
-  static async analyzeOpportunity(keyword: string, sources: SocialSourceResult[]): Promise<AIAnalysisResult> {
+  static async analyzeOpportunity(
+    keyword: string, 
+    sources: SocialSourceResult[], 
+    options?: AISynthesisOptions
+  ): Promise<AIAnalysisResult> {
     // Artificial latency to simulate extensive AI reasoning pipeline
     await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -40,7 +49,7 @@ export class AIService {
     try {
       if (hasOpenRouter) {
         console.log("Routing AI synthesis pipeline via OpenRouter...");
-        return await this.executeOpenRouterPipeline(keyword, sources);
+        return await this.executeOpenRouterPipeline(keyword, sources, options);
       } else {
         console.log("Routing AI synthesis pipeline via direct endpoints...");
         return await this.executeRealAIPipeline(keyword, sources);
@@ -54,10 +63,19 @@ export class AIService {
   /**
    * Executes the pipeline using the OpenRouter API (Unified Key)
    */
-  private static async executeOpenRouterPipeline(keyword: string, sources: SocialSourceResult[]): Promise<AIAnalysisResult> {
-    // 1. DeepSeek V3 call via OpenRouter to extract structural insights
+  private static async executeOpenRouterPipeline(
+    keyword: string, 
+    sources: SocialSourceResult[], 
+    options?: AISynthesisOptions
+  ): Promise<AIAnalysisResult> {
+    const extModel = options?.extractionModel || "deepseek/deepseek-chat";
+    const synthModel = options?.synthesisModel || "google/gemini-2.5-flash";
+
+    console.log(`OpenRouter configuration: Extraction=${extModel}, Synthesis=${synthModel}`);
+
+    // 1. Extraction model call via OpenRouter to extract structural insights
     const deepseekPayload = {
-      model: "deepseek/deepseek-chat",
+      model: extModel,
       messages: [
         {
           role: "system",
@@ -84,7 +102,7 @@ export class AIService {
     const dsJson = await dsResponse.json();
     const extractedData = JSON.parse(dsJson.choices[0].message.content);
 
-    // 2. Gemini 2.5 Flash call via OpenRouter to compile final reports
+    // 2. Synthesis model call via OpenRouter to compile final reports
     const geminiPrompt = `
 You are a senior staff engineer and SaaS founder. Compile a detailed build/validation recommendation report for the SaaS idea: "${keyword}".
 We have extracted the following pain points and market signals:
@@ -139,7 +157,7 @@ Provide a JSON response matching exactly this schema:
 `;
 
     const geminiPayload = {
-      model: "google/gemini-2.5-flash",
+      model: synthModel,
       messages: [
         {
           role: "user",
@@ -212,7 +230,7 @@ Provide a JSON response matching exactly this schema:
     const dsJson = await dsResponse.json();
     const extractedData = JSON.parse(dsJson.choices[0].message.content);
 
-    // 2. Gemini 2.5 Flash API Call - Synthesize final report, verdict, and Claude Code prompt
+    // 2. Gemini 2.5 API Call
     const geminiPrompt = `
 You are a senior staff engineer and SaaS founder. Compile a detailed build/validation recommendation report for the SaaS idea: "${keyword}".
 We have extracted the following pain points and market signals:
@@ -297,13 +315,11 @@ Provide a JSON response matching exactly this schema:
 
   /**
    * Generates highly detailed, content-rich, context-aware analysis dynamically based on the search keyword.
-   * This handles offline or non-API setup cleanly, avoiding generic templates.
    */
   private static generateHeuristicMock(keyword: string, sources: SocialSourceResult[]): AIAnalysisResult {
     const cleanKeyword = keyword.trim();
     const lowercaseKW = cleanKeyword.toLowerCase();
     
-    // Heuristics to customize recommendation parameters based on keyword content
     let rec: 'YES' | 'NO' | 'MAYBE' = 'YES';
     let oppScore = 85;
     let confScore = 80;

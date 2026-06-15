@@ -3,7 +3,7 @@
 
 import { db } from '../lib/db';
 import { RedditAdapter, PlayStoreAdapter, SocialSourceResult } from './adapters';
-import { AIService } from './ai';
+import { AIService, AISynthesisOptions } from './ai';
 import { Search } from '../lib/types';
 
 export class ResearchPipelineService {
@@ -11,7 +11,7 @@ export class ResearchPipelineService {
    * Orchestrates the complete research process for a keyword.
    * Updates the search status as it progresses.
    */
-  static async run(keyword: string, userId?: string): Promise<string> {
+  static async run(keyword: string, userId?: string, options?: AISynthesisOptions): Promise<string> {
     const cleanKW = keyword.trim();
     
     // 1. Create a pending search record
@@ -54,7 +54,7 @@ export class ResearchPipelineService {
 
       // Step 4: AI Analysis & Extraction
       await db.saveSearch({ ...search, status: 'analyzing' as any });
-      const aiResult = await AIService.analyzeOpportunity(cleanKW, allSources);
+      const aiResult = await AIService.analyzeOpportunity(cleanKW, allSources, options);
 
       // Step 5: Save Extracted Data
       for (const pain of aiResult.painPoints) {

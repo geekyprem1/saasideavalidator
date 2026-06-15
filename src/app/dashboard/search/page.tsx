@@ -10,7 +10,10 @@ import {
   ArrowRight, 
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Cpu,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 const SUGGESTIONS = [
@@ -31,6 +34,28 @@ export default function SearchPage() {
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Model selection states
+  const [extractionModel, setExtractionModel] = useState('deepseek/deepseek-chat');
+  const [synthesisModel, setSynthesisModel] = useState('google/gemini-2.5-flash');
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  useEffect(() => {
+    const savedExtraction = localStorage.getItem('saasradar_extraction_model');
+    const savedSynthesis = localStorage.getItem('saasradar_synthesis_model');
+    if (savedExtraction) setExtractionModel(savedExtraction);
+    if (savedSynthesis) setSynthesisModel(savedSynthesis);
+  }, []);
+
+  const handleExtractionChange = (val: string) => {
+    setExtractionModel(val);
+    localStorage.setItem('saasradar_extraction_model', val);
+  };
+
+  const handleSynthesisChange = (val: string) => {
+    setSynthesisModel(val);
+    localStorage.setItem('saasradar_synthesis_model', val);
+  };
   
   // Design system progress checklist steps
   const [steps, setSteps] = useState<AnalysisStep[]>([
@@ -95,7 +120,7 @@ export default function SearchPage() {
     ]);
 
     try {
-      const response = await triggerResearchAction(keyword);
+      const response = await triggerResearchAction(keyword, { extractionModel, synthesisModel });
       if (response.success && response.searchId) {
         setTimeout(() => {
           router.push(`/dashboard/reports/${response.searchId}`);
@@ -145,6 +170,52 @@ export default function SearchPage() {
                     <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
+              </div>
+
+              {/* Advanced Model Configuration Toggle */}
+              <div className="space-y-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAdvanced(!showAdvanced)}
+                  className="flex items-center gap-2 text-[10px] font-bold text-[#6B6B6B] hover:text-[#D4A017] transition-colors cursor-pointer uppercase tracking-wider"
+                >
+                  <Cpu className="h-3.5 w-3.5 text-[#C58B0F]" />
+                  <span>Configure AI Models</span>
+                  {showAdvanced ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                </button>
+
+                {showAdvanced && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-[#FAF7F2] border border-[#E8DFD0] animate-fadeIn">
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-wider block">
+                        Extraction Model
+                      </label>
+                      <select
+                        value={extractionModel}
+                        onChange={(e) => handleExtractionChange(e.target.value)}
+                        className="w-full px-3 py-2 bg-white border border-[#E8DFD0] rounded-xl text-xs text-[#1A1A1A] focus:outline-none focus:border-[#D4A017] transition-all cursor-pointer"
+                      >
+                        <option value="deepseek/deepseek-chat">DeepSeek V3 (Default)</option>
+                        <option value="openai/gpt-4o-mini">GPT-4o Mini (Fast)</option>
+                        <option value="anthropic/claude-3.5-haiku">Claude 3.5 Haiku</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-wider block">
+                        Synthesis Model
+                      </label>
+                      <select
+                        value={synthesisModel}
+                        onChange={(e) => handleSynthesisChange(e.target.value)}
+                        className="w-full px-3 py-2 bg-white border border-[#E8DFD0] rounded-xl text-xs text-[#1A1A1A] focus:outline-none focus:border-[#D4A017] transition-all cursor-pointer"
+                      >
+                        <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (Default)</option>
+                        <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                        <option value="openai/gpt-4o">GPT-4o (Reasoning)</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
             </form>
 

@@ -4,13 +4,14 @@
 
 import { ResearchPipelineService } from '../../services/pipeline';
 import { db } from '../../lib/db';
+import { AISynthesisOptions } from '../../services/ai';
 
-export async function triggerResearchAction(keyword: string) {
+export async function triggerResearchAction(keyword: string, options?: AISynthesisOptions) {
   try {
     if (!keyword || keyword.trim().length < 3) {
       return { success: false, error: 'Keyword must be at least 3 characters long.' };
     }
-    const searchId = await ResearchPipelineService.run(keyword);
+    const searchId = await ResearchPipelineService.run(keyword, undefined, options);
     return { success: true, searchId };
   } catch (error: any) {
     return { success: false, error: error?.message || 'Failed to complete analysis pipeline.' };
