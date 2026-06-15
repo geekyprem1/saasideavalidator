@@ -14,6 +14,8 @@ export default function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    localStorage.setItem('saasradar_user_email', email || 'demo@saasradar.ai');
+    localStorage.setItem('saasradar_user_name', email ? email.split('@')[0] : 'Demo Founder');
     setTimeout(() => {
       router.push('/dashboard');
     }, 600);
@@ -21,6 +23,8 @@ export default function LoginPage() {
 
   const handleDemoLogin = () => {
     setIsLoading(true);
+    localStorage.setItem('saasradar_user_email', 'demo@saasradar.ai');
+    localStorage.setItem('saasradar_user_name', 'Demo Founder');
     setTimeout(() => {
       router.push('/dashboard');
     }, 400);
@@ -111,6 +115,10 @@ export default function LoginPage() {
             </button>
           </div>
         </GlassCard>
+        
+        <p className="text-[10px] text-center text-[#6B6B6B] italic">
+          Tip: Log in with <span className="font-bold text-[#D4A017]">admin@saasradar.ai</span> to configure global models and API credentials.
+        </p>
       </div>
     </div>
   );

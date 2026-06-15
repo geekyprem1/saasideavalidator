@@ -19,6 +19,15 @@ import { clsx } from 'clsx';
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [email, setEmail] = React.useState('demo@saasradar.ai');
+  const [name, setName] = React.useState('Demo Founder');
+
+  React.useEffect(() => {
+    const savedEmail = localStorage.getItem('saasradar_user_email');
+    const savedName = localStorage.getItem('saasradar_user_name');
+    if (savedEmail) setEmail(savedEmail);
+    if (savedName) setName(savedName);
+  }, []);
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -105,8 +114,8 @@ export function Sidebar() {
               <User className="h-4.5 w-4.5 text-[#6B6B6B]" />
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-bold text-[#1A1A1A] truncate">Demo Founder</p>
-              <p className="text-[10px] text-[#6B6B6B] truncate">demo@saasradar.ai</p>
+              <p className="text-xs font-bold text-[#1A1A1A] truncate">{name}</p>
+              <p className="text-[10px] text-[#6B6B6B] truncate">{email}</p>
             </div>
           </div>
           

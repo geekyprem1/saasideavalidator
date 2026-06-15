@@ -11,7 +11,8 @@ import {
   Trash2, 
   Check, 
   Save,
-  HelpCircle
+  HelpCircle,
+  Shield
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -23,6 +24,7 @@ export default function SettingsPage() {
   const [deepseekKey, setDeepseekKey] = useState('');
   const [geminiKey, setGeminiKey] = useState('');
   const [openrouterKey, setOpenrouterKey] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   
   const [isSaved, setIsSaved] = useState(false);
 
@@ -32,6 +34,9 @@ export default function SettingsPage() {
     setDeepseekKey(localStorage.getItem('saasradar_deepseek_key') || '');
     setGeminiKey(localStorage.getItem('saasradar_gemini_key') || '');
     setOpenrouterKey(localStorage.getItem('saasradar_openrouter_key') || '');
+
+    const userEmail = localStorage.getItem('saasradar_user_email');
+    setIsAdmin(userEmail === 'admin@saasradar.ai');
   }, []);
 
   const handleSaveKeys = (e: React.FormEvent) => {
@@ -97,92 +102,108 @@ export default function SettingsPage() {
           </GlassCard>
 
           {/* API Keys Configuration */}
-          <GlassCard className="space-y-4">
-            <h3 className="text-xs uppercase tracking-wider font-extrabold text-[#C58B0F] border-b border-[#E8DFD0]/60 pb-2">
-              Venture API Credentials
-            </h3>
-            
-            <form onSubmit={handleSaveKeys} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="font-bold text-[#6B6B6B]">Supabase REST URL</label>
-                  <input
-                    type="text"
-                    placeholder="https://your-project.supabase.co"
-                    value={supabaseUrl}
-                    onChange={(e) => setSupabaseUrl(e.target.value)}
-                    className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
-                  />
+          {isAdmin ? (
+            <GlassCard className="space-y-4">
+              <h3 className="text-xs uppercase tracking-wider font-extrabold text-[#C58B0F] border-b border-[#E8DFD0]/60 pb-2">
+                Venture API Credentials
+              </h3>
+              
+              <form onSubmit={handleSaveKeys} className="space-y-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#6B6B6B]">Supabase REST URL</label>
+                    <input
+                      type="text"
+                      placeholder="https://your-project.supabase.co"
+                      value={supabaseUrl}
+                      onChange={(e) => setSupabaseUrl(e.target.value)}
+                      className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#6B6B6B]">Supabase Anon Key</label>
+                    <input
+                      type="password"
+                      placeholder="eyJhbGciOiJIUzI1NiIsIn..."
+                      value={supabaseKey}
+                      onChange={(e) => setSupabaseKey(e.target.value)}
+                      className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
+                    />
+                  </div>
                 </div>
+
                 <div className="space-y-1">
-                  <label className="font-bold text-[#6B6B6B]">Supabase Anon Key</label>
+                  <label className="font-bold text-[#6B6B6B]">OpenRouter API Key (Unified Key Routing)</label>
                   <input
                     type="password"
-                    placeholder="eyJhbGciOiJIUzI1NiIsIn..."
-                    value={supabaseKey}
-                    onChange={(e) => setSupabaseKey(e.target.value)}
+                    placeholder="sk-or-v1-..."
+                    value={openrouterKey}
+                    onChange={(e) => setOpenrouterKey(e.target.value)}
                     className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
                   />
                 </div>
-              </div>
 
-              <div className="space-y-1">
-                <label className="font-bold text-[#6B6B6B]">OpenRouter API Key (Unified Key Routing)</label>
-                <input
-                  type="password"
-                  placeholder="sk-or-v1-..."
-                  value={openrouterKey}
-                  onChange={(e) => setOpenrouterKey(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="font-bold text-[#6B6B6B]">DeepSeek V3 Key</label>
-                  <input
-                    type="password"
-                    placeholder="sk-deepseek-..."
-                    value={deepseekKey}
-                    onChange={(e) => setDeepseekKey(e.target.value)}
-                    className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#6B6B6B]">DeepSeek V3 Key</label>
+                    <input
+                      type="password"
+                      placeholder="sk-deepseek-..."
+                      value={deepseekKey}
+                      onChange={(e) => setDeepseekKey(e.target.value)}
+                      className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#6B6B6B]">Gemini 2.5 Flash Key</label>
+                    <input
+                      type="password"
+                      placeholder="AIzaSy..."
+                      value={geminiKey}
+                      onChange={(e) => setGeminiKey(e.target.value)}
+                      className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="font-bold text-[#6B6B6B]">Gemini 2.5 Flash Key</label>
-                  <input
-                    type="password"
-                    placeholder="AIzaSy..."
-                    value={geminiKey}
-                    onChange={(e) => setGeminiKey(e.target.value)}
-                    className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
-                  />
-                </div>
-              </div>
 
-              <div className="flex justify-between items-center pt-2">
-                <p className="text-[10px] text-[#6B6B6B] leading-normal max-w-xs">
-                  Keys are stored locally in your browser/server context. If left empty, analysis defaults to heuristics.
+                <div className="flex justify-between items-center pt-2">
+                  <p className="text-[10px] text-[#6B6B6B] leading-normal max-w-xs">
+                    Keys are stored locally in your browser/server context. If left empty, analysis defaults to heuristics.
+                  </p>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[#D4A017] hover:bg-[#C58B0F] text-white rounded-xl font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+                  >
+                    {isSaved ? (
+                      <>
+                        <Check className="h-4 w-4" />
+                        <span>Saved Configuration</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4" />
+                        <span>Save Credentials</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </GlassCard>
+          ) : (
+            <GlassCard className="space-y-4 opacity-80">
+              <h3 className="text-xs uppercase tracking-wider font-extrabold text-[#C58B0F] border-b border-[#E8DFD0]/60 pb-2 flex items-center justify-between">
+                <span>Venture API Credentials</span>
+                <Shield className="h-4.5 w-4.5 text-[#D4A017]" />
+              </h3>
+              <div className="py-6 text-center space-y-2.5">
+                <Key className="h-8 w-8 text-[#C58B0F] mx-auto opacity-80 animate-pulse" />
+                <h4 className="font-bold text-sm text-[#1A1A1A]">API Credentials Restricted</h4>
+                <p className="text-xs text-[#6B6B6B] max-w-xs mx-auto leading-relaxed">
+                  API keys and platform routing models are managed by administrators. Log in with admin@saasradar.ai to access credentials.
                 </p>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[#D4A017] hover:bg-[#C58B0F] text-white rounded-xl font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
-                >
-                  {isSaved ? (
-                    <>
-                      <Check className="h-4 w-4" />
-                      <span>Saved Configuration</span>
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4" />
-                      <span>Save Credentials</span>
-                    </>
-                  )}
-                </button>
               </div>
-            </form>
-          </GlassCard>
+            </GlassCard>
+          )}
 
           {/* Membership Plan details */}
           <GlassCard className="space-y-4">
