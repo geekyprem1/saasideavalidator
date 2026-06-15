@@ -21,8 +21,8 @@ export default async function ReportsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-[#1A1A1A]">SaaS Opportunity Reports</h2>
-          <p className="text-xs text-[#6B6B6B]">Directory of compiled market intelligence blueprints and validation scores.</p>
+          <h2 className="text-xl font-bold tracking-tight text-[#1A1A1A]">LaunchDNA Reports</h2>
+          <p className="text-xs text-[#6B6B6B]">Directory of compiled LaunchDNA blueprints and validation scores.</p>
         </div>
         <Link
           href="/dashboard/search"
@@ -71,7 +71,7 @@ export default async function ReportsPage() {
 
                 <div className="grid grid-cols-3 gap-4 pt-3 border-t border-[#E8DFD0]/60 text-xs">
                   <div>
-                    <span className="text-[8px] uppercase font-bold text-[#6B6B6B] block">Viability Score</span>
+                    <span className="text-[8px] uppercase font-bold text-[#6B6B6B] block">LaunchDNA Score</span>
                     <span className={`font-bold ${scoreStyle} text-sm mt-0.5 block`}>{score}/100</span>
                   </div>
                   <div>

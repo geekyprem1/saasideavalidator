@@ -104,8 +104,8 @@ export class AIService {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${routerKey}`,
-        "HTTP-Referer": "https://saasradar-ai.vercel.app",
-        "X-Title": "SaaSRadar AI"
+        "HTTP-Referer": "https://launchdna.app",
+        "X-Title": "LaunchDNA"
       },
       body: JSON.stringify(deepseekPayload)
     });
@@ -182,8 +182,8 @@ Provide a JSON response matching exactly this schema:
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${routerKey}`,
-        "HTTP-Referer": "https://saasradar-ai.vercel.app",
-        "X-Title": "SaaSRadar AI"
+        "HTTP-Referer": "https://launchdna.app",
+        "X-Title": "LaunchDNA"
       },
       body: JSON.stringify(geminiPayload)
     });

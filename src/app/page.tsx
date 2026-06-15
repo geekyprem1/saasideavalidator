@@ -44,7 +44,7 @@ export default function LandingPage() {
   ];
 
   const faqs = [
-    { q: 'How does SaaSRadar scrape data?', a: 'SaaSRadar utilizes public adapters reading DuckDuckGo search indexes (restricted to Reddit discussions) and the Google Play reviews database via play scrapers.' },
+    { q: 'How does LaunchDNA scrape data?', a: 'LaunchDNA utilizes public adapters reading DuckDuckGo search indexes (restricted to Reddit discussions) and the Google Play reviews database via play scrapers.' },
     { q: 'Can I test it without API keys?', a: 'Yes! The platform features an offline Sandbox Heuristic mode. If API credentials are not set, it uses advanced parsing matching your keyword to generate reports.' },
     { q: 'Is the billing live?', a: 'No, this is currently in validation mode. Billing features are prepared but not active.' }
   ];
@@ -63,7 +63,7 @@ export default function LandingPage() {
               <Radar className="h-5 w-5" />
             </div>
             <span className="font-bold text-sm tracking-wide text-[#1A1A1A]">
-              SaaSRadar AI
+              LaunchDNA
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -90,16 +90,16 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-6">
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#D4A017]/20 bg-[#D4A017]/5 text-[9px] font-bold text-[#C58B0F] tracking-widest uppercase">
-              Venture Intelligence Platform
+              AI Founder Decision Platform
             </div>
             
             <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#1A1A1A] leading-tight">
-              Discover SaaS <br />
-              <span className="text-[#C58B0F]">Opportunities Worth Building</span>
+              Discover SaaS Opportunities <br />
+              <span className="text-[#C58B0F]">Worth Building</span>
             </h1>
             
             <p className="text-xs md:text-sm text-[#6B6B6B] leading-relaxed max-w-xl font-medium">
-              Validate startup ideas using real customer conversations from Reddit and App Reviews. Scrape pain points, index competitor downfalls, and generate Claude Code prompts to build your validated MVP.
+              LaunchDNA analyzes real customer conversations and market signals to help founders decide what to build next.
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
@@ -134,7 +134,7 @@ export default function LandingPage() {
 
               <div className="space-y-3.5 text-xs text-[#6B6B6B]">
                 <div className="flex justify-between">
-                  <span>Opportunity Score</span>
+                  <span>LaunchDNA Score</span>
                   <span className="font-bold text-[#1A1A1A]">88/100</span>
                 </div>
                 <div className="flex justify-between">
@@ -153,6 +153,10 @@ export default function LandingPage() {
                   "Existing calorie counter databases fail on regional Indian dishes. Users are looking for raw-ingredient batch trackers."
                 </p>
               </div>
+              
+              <div className="text-[8px] text-center font-bold text-[#C58B0F]/80 uppercase tracking-widest pt-1 border-t border-[#E8DFD0]/40">
+                Powered by LaunchDNA™ Engine
+              </div>
             </GlassCard>
           </div>
         </div>
@@ -170,7 +174,7 @@ export default function LandingPage() {
             </GlassCard>
             <GlassCard className="p-5 space-y-2">
               <span className="text-xs font-bold text-[#C58B0F] block">03 / AI Powered</span>
-              <p className="text-[11px] text-[#6B6B6B] leading-relaxed">DeepSeek V3 structure extraction and Gemini Flash blueprint compilers.</p>
+              <p className="text-[11px] text-[#6B6B6B] leading-relaxed">DeepSeek V3 structure extraction and Gemini Flash compilers via LaunchDNA™ Engine.</p>
             </GlassCard>
             <GlassCard className="p-5 space-y-2">
               <span className="text-xs font-bold text-[#C58B0F] block">04 / Fast Validation</span>
@@ -332,7 +336,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <GlassCard className="p-6 space-y-3">
               <blockquote className="text-xs text-[#6B6B6B] leading-relaxed italic">
-                "SaaSRadar saved us at least 3 weeks of custom database setup. The Indian Calorie Counter report clearly mapped the exact pain points. The Claude Code Prompt generated the core weight recipe builder in 10 minutes."
+                "LaunchDNA saved us at least 3 weeks of custom database setup. The Indian Calorie Counter report clearly mapped the exact pain points. The Claude Code Prompt generated the core weight recipe builder in 10 minutes."
               </blockquote>
               <div className="text-[10px] font-bold text-[#1A1A1A]">
                 — Rohan S., Solo Founder of GharKaCalorie
@@ -396,7 +400,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#E8DFD0] bg-white py-6 text-center text-xs text-gray-500">
-        <p>© {new Date().getFullYear()} SaaSRadar AI. McKinsey & Linear consulting aesthetics.</p>
+        <p>© {new Date().getFullYear()} LaunchDNA. McKinsey & Linear consulting aesthetics.</p>
       </footer>
     </div>
   );

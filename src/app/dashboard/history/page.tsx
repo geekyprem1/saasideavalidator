@@ -105,8 +105,8 @@ export default function HistoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-[#1A1A1A]">Venture Archive Catalog</h2>
-          <p className="text-xs text-[#6B6B6B]">Search and filter past SaaS idea validation logs and opportunity scores.</p>
+          <h2 className="text-xl font-bold tracking-tight text-[#1A1A1A]">LaunchDNA Archive</h2>
+          <p className="text-xs text-[#6B6B6B]">Search and filter past SaaS idea validation logs and LaunchDNA scores.</p>
         </div>
         <Link
           href="/dashboard/search"

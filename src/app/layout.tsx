@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SaaSRadar AI - SaaS Opportunity Intelligence Platform',
-  description: 'Validate your SaaS ideas, scan customer feedback from Reddit and Play Store, detect market gaps, and generate code-ready blueprints for Claude Code.',
+  title: 'LaunchDNA - Discover SaaS Opportunities Worth Building',
+  description: 'LaunchDNA analyzes real customer conversations and market signals to help founders decide what to build next.',
 };
 
 export default function RootLayout({

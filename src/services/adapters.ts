@@ -101,7 +101,7 @@ export class RedditAdapter implements SocialSourceAdapter {
           title: `Why does every single ${cleanKW} tool feel like bloatware?`,
           content: `I have been looking for a solid ${cleanKW} solution for the past few weeks and everything I find is either part of some massive corporate enterprise suite (charging $50+/month) or a complete hobby project that gets abandoned after 3 months. I just want a clean, simple, single-purpose dashboard that does the basics really well.`,
           author: 'indie_dev_99',
-          url: `https://reddit.com/r/SaaS/comments/saasradar_${lowercaseKW.replace(/\s+/g, '_')}_1`,
+          url: `https://reddit.com/r/SaaS/comments/launchdna_${lowercaseKW.replace(/\s+/g, '_')}_1`,
           likes: 124,
           date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
         },
@@ -110,7 +110,7 @@ export class RedditAdapter implements SocialSourceAdapter {
           title: `Anyone willing to pay for a lightweight ${cleanKW} client?`,
           content: `I am currently doing manual workflows for my ${cleanKW} routine and it is wasting at least 2 hours of my day. If someone built a dedicated, secure tool that handles this automatically, I would happily pay $10-$20 a month for it.`,
           author: 'founder_hustler',
-          url: `https://reddit.com/r/startups/comments/saasradar_${lowercaseKW.replace(/\s+/g, '_')}_2`,
+          url: `https://reddit.com/r/startups/comments/launchdna_${lowercaseKW.replace(/\s+/g, '_')}_2`,
           likes: 56,
           date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
         }
@@ -172,7 +172,7 @@ export class PlayStoreAdapter implements SocialSourceAdapter {
           title: 'Too expensive for basic features',
           content: `I have been using this app for my ${cleanKW} logs. It worked great until the recent update where they locked historical logs behind a premium paywall. $10 a month just to see my own records is ridiculous.`,
           author: 'Marcus K.',
-          url: `https://play.google.com/store/apps/details?id=com.saasradar.${lowercaseKW.replace(/\s+/g, '')}&reviewId=1`,
+          url: `https://play.google.com/store/apps/details?id=com.launchdna.${lowercaseKW.replace(/\s+/g, '')}&reviewId=1`,
           likes: 42,
           date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString()
         }

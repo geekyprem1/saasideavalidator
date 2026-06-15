@@ -37,7 +37,7 @@ export default async function DashboardPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1A1A1A]">Good Morning, Founder</h1>
-          <p className="text-xs text-[#6B6B6B] mt-0.5">Discover your next SaaS opportunity.</p>
+          <p className="text-xs text-[#6B6B6B] mt-0.5">Discover SaaS opportunities worth building.</p>
         </div>
         <Link
           href="/dashboard/search"
@@ -83,7 +83,7 @@ export default async function DashboardPage() {
           
           {/* Trending Opportunities */}
           <div className="space-y-3">
-            <h3 className="text-xs uppercase tracking-widest font-extrabold text-[#6B6B6B]">Trending Opportunities</h3>
+            <h3 className="text-xs uppercase tracking-widest font-extrabold text-[#6B6B6B]">Trending LaunchDNA Opportunities</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               
               {/* Card 1: AI Diet Planner */}
@@ -127,8 +127,8 @@ export default async function DashboardPage() {
           <GlassCard className="space-y-4">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-sm font-bold text-[#1A1A1A]">Recent Intelligence Reports</h3>
-                <p className="text-[10px] text-[#6B6B6B]">Dossier analysis records compiled by AI</p>
+                <h3 className="text-sm font-bold text-[#1A1A1A]">Recent LaunchDNA Reports</h3>
+                <p className="text-[10px] text-[#6B6B6B]">Dossier analysis records compiled by LaunchDNA™ Engine</p>
               </div>
               <Link href="/dashboard/reports" className="text-xs text-[#C58B0F] hover:text-[#D4A017] font-bold inline-flex items-center gap-1">
                 <span>View Archives</span>
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
                   <tr className="border-b border-[#E8DFD0] text-[9px] font-bold tracking-wider text-[#6B6B6B] uppercase">
                     <th className="py-2.5 px-3">SaaS Idea</th>
                     <th className="py-2.5 px-3">Verdict</th>
-                    <th className="py-2.5 px-3">Score</th>
+                    <th className="py-2.5 px-3">LaunchDNA Score</th>
                     <th className="py-2.5 px-3">Validation Date</th>
                     <th className="py-2.5 px-3 text-right">Dossier</th>
                   </tr>
@@ -197,7 +197,7 @@ export default async function DashboardPage() {
 
         {/* Right Column: Founder Insights Feed */}
         <div className="space-y-4">
-          <h3 className="text-xs uppercase tracking-widest font-extrabold text-[#6B6B6B]">Founder Insights Feed</h3>
+          <h3 className="text-xs uppercase tracking-widest font-extrabold text-[#6B6B6B]">LaunchDNA Intelligence Graph</h3>
           
           <GlassCard className="space-y-6">
             

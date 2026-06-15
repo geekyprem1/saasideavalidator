@@ -29,23 +29,23 @@ export default function SettingsPage() {
   const [isSaved, setIsSaved] = useState(false);
 
   React.useEffect(() => {
-    setSupabaseUrl(localStorage.getItem('saasradar_supabase_url') || '');
-    setSupabaseKey(localStorage.getItem('saasradar_supabase_key') || '');
-    setDeepseekKey(localStorage.getItem('saasradar_deepseek_key') || '');
-    setGeminiKey(localStorage.getItem('saasradar_gemini_key') || '');
-    setOpenrouterKey(localStorage.getItem('saasradar_openrouter_key') || '');
+    setSupabaseUrl(localStorage.getItem('launchdna_supabase_url') || '');
+    setSupabaseKey(localStorage.getItem('launchdna_supabase_key') || '');
+    setDeepseekKey(localStorage.getItem('launchdna_deepseek_key') || '');
+    setGeminiKey(localStorage.getItem('launchdna_gemini_key') || '');
+    setOpenrouterKey(localStorage.getItem('launchdna_openrouter_key') || '');
 
-    const userEmail = localStorage.getItem('saasradar_user_email');
-    setIsAdmin(userEmail === 'admin@saasradar.ai');
+    const userEmail = localStorage.getItem('launchdna_user_email');
+    setIsAdmin(userEmail === 'admin@launchdna.app');
   }, []);
 
   const handleSaveKeys = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('saasradar_supabase_url', supabaseUrl);
-    localStorage.setItem('saasradar_supabase_key', supabaseKey);
-    localStorage.setItem('saasradar_deepseek_key', deepseekKey);
-    localStorage.setItem('saasradar_gemini_key', geminiKey);
-    localStorage.setItem('saasradar_openrouter_key', openrouterKey);
+    localStorage.setItem('launchdna_supabase_url', supabaseUrl);
+    localStorage.setItem('launchdna_supabase_key', supabaseKey);
+    localStorage.setItem('launchdna_deepseek_key', deepseekKey);
+    localStorage.setItem('launchdna_gemini_key', geminiKey);
+    localStorage.setItem('launchdna_openrouter_key', openrouterKey);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2500);
   };
@@ -96,7 +96,7 @@ export default function SettingsPage() {
               </div>
               <div className="space-y-0.5">
                 <h4 className="text-sm font-bold text-[#1A1A1A]">Demo Founder</h4>
-                <p className="text-xs text-[#6B6B6B]">demo@saasradar.ai · Active Developer Session</p>
+                <p className="text-xs text-[#6B6B6B]">demo@launchdna.app · Active Developer Session</p>
               </div>
             </div>
           </GlassCard>
@@ -199,7 +199,7 @@ export default function SettingsPage() {
                 <Key className="h-8 w-8 text-[#C58B0F] mx-auto opacity-80 animate-pulse" />
                 <h4 className="font-bold text-sm text-[#1A1A1A]">API Credentials Restricted</h4>
                 <p className="text-xs text-[#6B6B6B] max-w-xs mx-auto leading-relaxed">
-                  API keys and platform routing models are managed by administrators. Log in with admin@saasradar.ai to access credentials.
+                  API keys and platform routing models are managed by administrators. Log in with admin@launchdna.app to access credentials.
                 </p>
               </div>
             </GlassCard>

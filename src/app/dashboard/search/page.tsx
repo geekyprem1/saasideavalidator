@@ -42,23 +42,23 @@ export default function SearchPage() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const savedExtraction = localStorage.getItem('saasradar_extraction_model');
-    const savedSynthesis = localStorage.getItem('saasradar_synthesis_model');
+    const savedExtraction = localStorage.getItem('launchdna_extraction_model');
+    const savedSynthesis = localStorage.getItem('launchdna_synthesis_model');
     if (savedExtraction) setExtractionModel(savedExtraction);
     if (savedSynthesis) setSynthesisModel(savedSynthesis);
 
-    const userEmail = localStorage.getItem('saasradar_user_email');
-    setIsAdmin(userEmail === 'admin@saasradar.ai');
+    const userEmail = localStorage.getItem('launchdna_user_email');
+    setIsAdmin(userEmail === 'admin@launchdna.app');
   }, []);
 
   const handleExtractionChange = (val: string) => {
     setExtractionModel(val);
-    localStorage.setItem('saasradar_extraction_model', val);
+    localStorage.setItem('launchdna_extraction_model', val);
   };
 
   const handleSynthesisChange = (val: string) => {
     setSynthesisModel(val);
-    localStorage.setItem('saasradar_synthesis_model', val);
+    localStorage.setItem('launchdna_synthesis_model', val);
   };
   
   // Design system progress checklist steps
@@ -68,7 +68,7 @@ export default function SearchPage() {
     { label: 'Extracting Pain Points', status: 'idle' },
     { label: 'Detecting Buyer Intent', status: 'idle' },
     { label: 'Finding Market Gaps', status: 'idle' },
-    { label: 'Calculating Opportunity Score', status: 'idle' },
+    { label: 'Calculating LaunchDNA Score', status: 'idle' },
     { label: 'Generating SaaS Blueprint', status: 'idle' },
     { label: 'Creating Founder Verdict', status: 'idle' },
     { label: 'Generating Claude Code Prompt', status: 'idle' }
@@ -117,15 +117,15 @@ export default function SearchPage() {
       { label: 'Extracting Pain Points', status: 'idle' },
       { label: 'Detecting Buyer Intent', status: 'idle' },
       { label: 'Finding Market Gaps', status: 'idle' },
-      { label: 'Calculating Opportunity Score', status: 'idle' },
+      { label: 'Calculating LaunchDNA Score', status: 'idle' },
       { label: 'Generating SaaS Blueprint', status: 'idle' },
       { label: 'Creating Founder Verdict', status: 'idle' },
       { label: 'Generating Claude Code Prompt', status: 'idle' }
     ]);
 
-    const openrouterApiKey = localStorage.getItem('saasradar_openrouter_key') || undefined;
-    const deepseekApiKey = localStorage.getItem('saasradar_deepseek_key') || undefined;
-    const geminiApiKey = localStorage.getItem('saasradar_gemini_key') || undefined;
+    const openrouterApiKey = localStorage.getItem('launchdna_openrouter_key') || undefined;
+    const deepseekApiKey = localStorage.getItem('launchdna_deepseek_key') || undefined;
+    const geminiApiKey = localStorage.getItem('launchdna_gemini_key') || undefined;
 
     try {
       const response = await triggerResearchAction(keyword, { 
@@ -269,7 +269,7 @@ export default function SearchPage() {
           
           <div className="text-center py-4 space-y-2 border-b border-[#E8DFD0]/60">
             <Radar className="h-8 w-8 text-[#C58B0F] animate-spin mx-auto" />
-            <h3 className="font-bold text-base text-[#1A1A1A]">Assembling Venture Dossier</h3>
+            <h3 className="font-bold text-base text-[#1A1A1A]">Assembling LaunchDNA Dossier</h3>
             <p className="text-xs text-[#6B6B6B]">Querying consumer channels for "{keyword}"</p>
           </div>
 

@@ -14,8 +14,8 @@ export default function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    localStorage.setItem('saasradar_user_email', email || 'demo@saasradar.ai');
-    localStorage.setItem('saasradar_user_name', email ? email.split('@')[0] : 'Demo Founder');
+    localStorage.setItem('launchdna_user_email', email || 'demo@launchdna.app');
+    localStorage.setItem('launchdna_user_name', email ? email.split('@')[0] : 'Demo Founder');
     setTimeout(() => {
       router.push('/dashboard');
     }, 600);
@@ -23,8 +23,8 @@ export default function LoginPage() {
 
   const handleDemoLogin = () => {
     setIsLoading(true);
-    localStorage.setItem('saasradar_user_email', 'demo@saasradar.ai');
-    localStorage.setItem('saasradar_user_name', 'Demo Founder');
+    localStorage.setItem('launchdna_user_email', 'demo@launchdna.app');
+    localStorage.setItem('launchdna_user_name', 'Demo Founder');
     setTimeout(() => {
       router.push('/dashboard');
     }, 400);
@@ -41,8 +41,8 @@ export default function LoginPage() {
           <div className="inline-flex p-3 rounded-xl bg-[#D4A017]/10 border border-[#D4A017]/20 text-[#C58B0F] mb-1">
             <Radar className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl font-black tracking-tight text-[#1A1A1A]">Welcome to SaaSRadar AI</h1>
-          <p className="text-xs text-[#6B6B6B]">Venture Intelligence & SaaS Opportunity Validation Platform</p>
+          <h1 className="text-2xl font-black tracking-tight text-[#1A1A1A]">Welcome to LaunchDNA</h1>
+          <p className="text-xs text-[#6B6B6B]">LaunchDNA Founder Decision Platform</p>
         </div>
 
         <GlassCard className="p-8 border-[#E8DFD0] space-y-6 shadow-md">
@@ -117,7 +117,7 @@ export default function LoginPage() {
         </GlassCard>
         
         <p className="text-[10px] text-center text-[#6B6B6B] italic">
-          Tip: Log in with <span className="font-bold text-[#D4A017]">admin@saasradar.ai</span> to configure global models and API credentials.
+          Tip: Log in with <span className="font-bold text-[#D4A017]">admin@launchdna.app</span> to configure global models and API credentials.
         </p>
       </div>
     </div>

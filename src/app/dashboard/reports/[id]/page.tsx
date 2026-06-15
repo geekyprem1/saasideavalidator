@@ -95,7 +95,7 @@ export default function ReportDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24 space-y-4">
         <Radar className="h-8 w-8 text-[#C58B0F] animate-spin" />
-        <p className="text-xs text-[#6B6B6B] font-semibold">Compiling Venture Dossier Report...</p>
+        <p className="text-xs text-[#6B6B6B] font-semibold">Compiling LaunchDNA Report...</p>
       </div>
     );
   }
@@ -160,7 +160,7 @@ export default function ReportDetailPage() {
       {/* Report Header */}
       <div>
         <h2 className="text-2xl font-black text-[#1A1A1A] tracking-tight flex items-center gap-2 flex-wrap">
-          <span>Venture Intelligence Report:</span>
+          <span>LaunchDNA Report:</span>
           <span className="text-[#C58B0F]">
             {search.keyword}
           </span>
@@ -170,11 +170,14 @@ export default function ReportDetailPage() {
 
       {/* HERO SECTION: FOUNDER VERDICT (Consulting style) */}
       <GlassCard className="p-8 border-[#E8DFD0] relative overflow-hidden" glowColor={verdict === 'YES' ? 'emerald' : verdict === 'MAYBE' ? 'amber' : 'rose'}>
-        <div className="absolute top-0 right-0 p-6">
+        <div className="absolute top-0 right-0 p-6 flex flex-col items-end gap-2">
           <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[11px] font-extrabold tracking-widest ${verdictConfig.badge}`}>
             <VerdictIcon className="h-4 w-4" />
             <span>FOUNDER VERDICT: {verdict}</span>
           </div>
+          <span className="text-[8px] font-bold text-[#C58B0F]/80 uppercase tracking-widest">
+            Powered by LaunchDNA™ Engine
+          </span>
         </div>
 
         <div className="max-w-3xl space-y-6">
@@ -227,7 +230,7 @@ export default function ReportDetailPage() {
       {/* METRIC SCORE CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <GlassCard className="p-5">
-          <span className="text-[9px] uppercase tracking-wider font-extrabold text-[#6B6B6B]">Opportunity Score</span>
+          <span className="text-[9px] uppercase tracking-wider font-extrabold text-[#6B6B6B]">LaunchDNA Score</span>
           <div className="flex items-center gap-3 mt-1.5">
             <h4 className={`text-2xl font-black ${verdictConfig.color}`}>{search.opportunity_score}/100</h4>
             <div className="flex-1 h-1.5 bg-[#FAF7F2] border border-[#E8DFD0] rounded-full overflow-hidden">
@@ -291,7 +294,7 @@ export default function ReportDetailPage() {
         {activeTab === 'verdict' && (
           <div className="space-y-6 animate-fadeIn">
             <GlassCard className="space-y-4">
-              <h3 className="text-sm font-bold text-[#1A1A1A] border-b border-[#E8DFD0]/60 pb-2">Venture Sector Synthesis</h3>
+              <h3 className="text-sm font-bold text-[#1A1A1A] border-b border-[#E8DFD0]/60 pb-2">LaunchDNA Opportunity Synthesis</h3>
               <p className="text-xs text-[#6B6B6B] leading-relaxed font-normal whitespace-pre-line">
                 {report.market_overview}
               </p>

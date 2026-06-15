@@ -19,12 +19,12 @@ import { clsx } from 'clsx';
 
 export function Sidebar() {
   const pathname = usePathname();
-  const [email, setEmail] = React.useState('demo@saasradar.ai');
+  const [email, setEmail] = React.useState('demo@launchdna.app');
   const [name, setName] = React.useState('Demo Founder');
 
   React.useEffect(() => {
-    const savedEmail = localStorage.getItem('saasradar_user_email');
-    const savedName = localStorage.getItem('saasradar_user_name');
+    const savedEmail = localStorage.getItem('launchdna_user_email');
+    const savedName = localStorage.getItem('launchdna_user_name');
     if (savedEmail) setEmail(savedEmail);
     if (savedName) setName(savedName);
   }, []);
@@ -47,10 +47,10 @@ export function Sidebar() {
           </div>
           <div>
             <h1 className="font-bold text-sm tracking-wide text-[#1A1A1A]">
-              SaaSRadar AI
+              LaunchDNA
             </h1>
             <p className="text-[10px] text-[#C58B0F] font-bold tracking-wider uppercase">
-              Venture Intelligence
+              LaunchDNA Intelligence
             </p>
           </div>
         </div>
