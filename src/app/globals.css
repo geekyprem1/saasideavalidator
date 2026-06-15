@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FAF7F2;
+  --foreground: #1A1A1A;
+  
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  
+  --primary: #D4A017;
+  --primary-foreground: #FFFFFF;
+  
+  --secondary: #F5EFE4;
+  --secondary-foreground: #1A1A1A;
+  
+  --muted: #F5EFE4;
+  --muted-foreground: #6B6B6B;
+  
+  --accent: #D4A017;
+  --accent-foreground: #FFFFFF;
+  
+  --destructive: #B44C4C;
+  --destructive-foreground: #FFFFFF;
+  
+  --border: #E8DFD0;
+  --input: #E8DFD0;
+  --ring: #D4A017;
+  
+  --success: #4C8C4A;
+  --warning: #C58B0F;
+  --danger: #B44C4C;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Sleek Editorial Look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E8DFD0;
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4A017;
+}
+
+/* Editorial background grid */
+.bg-grid {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(232, 223, 208, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(232, 223, 208, 0.25) 1px, transparent 1px);
+}
+
+.radial-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(212, 160, 23, 0.03) 0%, transparent 70%);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #1A1A1A 30%, #C58B0F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom fade-in for tabs */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
