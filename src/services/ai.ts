@@ -1,10 +1,12 @@
 // AI Intelligence Service
 // Orchestrates DeepSeek V3 (for structure parsing) and Gemini 2.5 Flash (for final reports).
+// Supports direct API keys OR unified OpenRouter API key routing.
 // Includes a robust context-aware semantic generation engine for offline/demo operation.
 
 import { PainPoint, Competitor, Opportunity, Report, FounderVerdict, MarketGap, BuyerIntentSignal } from '../lib/types';
 import { SocialSourceResult } from './adapters';
 
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
@@ -25,22 +27,163 @@ export class AIService {
    * If API keys are missing, falls back to a high-fidelity heuristic generator.
    */
   static async analyzeOpportunity(keyword: string, sources: SocialSourceResult[]): Promise<AIAnalysisResult> {
-    // Artificial latency to simulate extensive AI reasoning pipeline (DeepSeek V3 + Gemini 2.5)
+    // Artificial latency to simulate extensive AI reasoning pipeline
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    if (!DEEPSEEK_API_KEY || !GEMINI_API_KEY) {
+    const hasOpenRouter = !!OPENROUTER_API_KEY;
+    const hasDirectKeys = !!(DEEPSEEK_API_KEY && GEMINI_API_KEY);
+
+    if (!hasOpenRouter && !hasDirectKeys) {
       return this.generateHeuristicMock(keyword, sources);
     }
 
     try {
-      // Real API implementation (DeepSeek for extraction, Gemini for final synthesis)
-      return await this.executeRealAIPipeline(keyword, sources);
+      if (hasOpenRouter) {
+        console.log("Routing AI synthesis pipeline via OpenRouter...");
+        return await this.executeOpenRouterPipeline(keyword, sources);
+      } else {
+        console.log("Routing AI synthesis pipeline via direct endpoints...");
+        return await this.executeRealAIPipeline(keyword, sources);
+      }
     } catch (e) {
       console.warn("AI Pipeline failed, falling back to mock generator:", e);
       return this.generateHeuristicMock(keyword, sources);
     }
   }
 
+  /**
+   * Executes the pipeline using the OpenRouter API (Unified Key)
+   */
+  private static async executeOpenRouterPipeline(keyword: string, sources: SocialSourceResult[]): Promise<AIAnalysisResult> {
+    // 1. DeepSeek V3 call via OpenRouter to extract structural insights
+    const deepseekPayload = {
+      model: "deepseek/deepseek-chat",
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert market research analyst. Extract pain points, competitor names, customer weaknesses, and buyer intent signals from the provided raw customer comments. Format as clean JSON containing keys: painPoints (array of {title, description, mentions, severity, example_quotes: array of {quote, source, url, confidence}}), competitors (array of {name, mentions, strengths, weaknesses: array of {weakness, quote, source, url}})."
+        },
+        {
+          role: "user",
+          content: `Keyword: ${keyword}\n\nSources Data:\n${JSON.stringify(sources, null, 2)}`
+        }
+      ],
+      response_format: { type: "json_object" }
+    };
+
+    const dsResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "HTTP-Referer": "https://saasradar-ai.vercel.app",
+        "X-Title": "SaaSRadar AI"
+      },
+      body: JSON.stringify(deepseekPayload)
+    });
+    const dsJson = await dsResponse.json();
+    const extractedData = JSON.parse(dsJson.choices[0].message.content);
+
+    // 2. Gemini 2.5 Flash call via OpenRouter to compile final reports
+    const geminiPrompt = `
+You are a senior staff engineer and SaaS founder. Compile a detailed build/validation recommendation report for the SaaS idea: "${keyword}".
+We have extracted the following pain points and market signals:
+${JSON.stringify(extractedData, null, 2)}
+
+Provide a JSON response matching exactly this schema:
+{
+  "founder_verdict": {
+    "recommendation": "YES" | "NO" | "MAYBE",
+    "why": ["reason 1", "reason 2", "reason 3"],
+    "biggest_risk": "string description",
+    "validation_path": "string description",
+    "mvp_timeline": "string e.g. 2 weeks",
+    "revenue_timeline": "string e.g. 30 days"
+  },
+  "metrics": {
+    "opportunity_score": number (0-100),
+    "confidence_score": number (0-100),
+    "revenue_potential": "string description",
+    "market_demand": "string description"
+  },
+  "opportunity": {
+    "recommended_saas": "product name",
+    "problem_solved": "string",
+    "target_audience": "string",
+    "core_features": ["feature 1", "feature 2"],
+    "features_to_ignore": ["feature 1", "feature 2"],
+    "tech_stack": ["Next.js", "Supabase", etc.],
+    "expected_build_time": "string",
+    "pricing_recommendation": "string"
+  },
+  "claude_prompt": "A complete, highly detailed prompt for Claude Code to generate the recommended SaaS application.",
+  "market_overview": "Paragraph describing the space.",
+  "market_gaps": [
+    {
+      "gap_name": "string",
+      "description": "string",
+      "demand_level": "low" | "medium" | "high",
+      "evidence": { "quote": "string", "source": "string", "url": "string" }
+    }
+  ],
+  "buyer_intent_signals": [
+    {
+      "signal": "string",
+      "quote": "string",
+      "source": "string",
+      "url": "string",
+      "strength": "low" | "medium" | "high"
+    }
+  ]
+}
+`;
+
+    const geminiPayload = {
+      model: "google/gemini-2.5-flash",
+      messages: [
+        {
+          role: "user",
+          content: geminiPrompt
+        }
+      ],
+      response_format: { type: "json_object" }
+    };
+
+    const geminiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "HTTP-Referer": "https://saasradar-ai.vercel.app",
+        "X-Title": "SaaSRadar AI"
+      },
+      body: JSON.stringify(geminiPayload)
+    });
+    
+    const geminiJson = await geminiResponse.json();
+    const result = JSON.parse(geminiJson.choices[0].message.content);
+
+    return {
+      painPoints: extractedData.painPoints || [],
+      competitors: extractedData.competitors || [],
+      opportunity: result.opportunity,
+      report: {
+        founder_verdict: result.founder_verdict,
+        claude_prompt: result.claude_prompt,
+        market_overview: result.market_overview,
+        market_gaps: result.market_gaps || [],
+        buyer_intent_signals: result.buyer_intent_signals || []
+      },
+      opportunityScore: result.metrics.opportunity_score,
+      confidenceScore: result.metrics.confidence_score,
+      revenuePotential: result.metrics.revenue_potential,
+      marketDemand: result.metrics.market_demand
+    };
+  }
+
+  /**
+   * Executes the pipeline using direct DeepSeek & Gemini APIs
+   */
   private static async executeRealAIPipeline(keyword: string, sources: SocialSourceResult[]): Promise<AIAnalysisResult> {
     // 1. DeepSeek V3 API Call - Extract structural insights from sources
     const deepseekPayload = {
@@ -170,7 +313,7 @@ Provide a JSON response matching exactly this schema:
     let risk = 'Low barrier to entry; competitors might copy features quickly.';
     let path = 'Build an interactive landing page, post in niche subreddits, and offer a $10 pre-order tier.';
 
-    if (lowercaseKW.includes('tracker') || lowercaseKW.includes('habit') || lowercaseKW.includes('productivity')) {
+    if (lowercaseKW.includes('tracker') || lowercaseKW.includes('habit') || lowercaseKW.includes('productivity') || lowercaseKW.includes('study') || lowercaseKW.includes('planner')) {
       rec = 'MAYBE';
       oppScore = 65;
       confScore = 75;
@@ -205,7 +348,7 @@ Provide a JSON response matching exactly this schema:
     const painPoints: Omit<PainPoint, 'id' | 'search_id' | 'created_at'>[] = [
       {
         title: `Aggressive Pricing & Feature Lockouts`,
-        description: `Users are extremely frustrated with legacy tools in the ${cleanKeyword} category shifting standard offline features behind monthly subscription paywalls.`,
+        description: `Users are extremely frustrated with legacy tools in the ${cleanKeyword} category shifting standard features behind monthly subscription paywalls.`,
         mentions: 342,
         severity: 'high',
         example_quotes: [{
