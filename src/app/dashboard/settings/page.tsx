@@ -22,11 +22,25 @@ export default function SettingsPage() {
   const [supabaseKey, setSupabaseKey] = useState('');
   const [deepseekKey, setDeepseekKey] = useState('');
   const [geminiKey, setGeminiKey] = useState('');
+  const [openrouterKey, setOpenrouterKey] = useState('');
   
   const [isSaved, setIsSaved] = useState(false);
 
+  React.useEffect(() => {
+    setSupabaseUrl(localStorage.getItem('saasradar_supabase_url') || '');
+    setSupabaseKey(localStorage.getItem('saasradar_supabase_key') || '');
+    setDeepseekKey(localStorage.getItem('saasradar_deepseek_key') || '');
+    setGeminiKey(localStorage.getItem('saasradar_gemini_key') || '');
+    setOpenrouterKey(localStorage.getItem('saasradar_openrouter_key') || '');
+  }, []);
+
   const handleSaveKeys = (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem('saasradar_supabase_url', supabaseUrl);
+    localStorage.setItem('saasradar_supabase_key', supabaseKey);
+    localStorage.setItem('saasradar_deepseek_key', deepseekKey);
+    localStorage.setItem('saasradar_gemini_key', geminiKey);
+    localStorage.setItem('saasradar_openrouter_key', openrouterKey);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2500);
   };
@@ -110,6 +124,17 @@ export default function SettingsPage() {
                     className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold text-[#6B6B6B]">OpenRouter API Key (Unified Key Routing)</label>
+                <input
+                  type="password"
+                  placeholder="sk-or-v1-..."
+                  value={openrouterKey}
+                  onChange={(e) => setOpenrouterKey(e.target.value)}
+                  className="w-full px-3.5 py-2 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl focus:outline-none focus:border-[#D4A017] transition-all text-[#1A1A1A]"
+                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

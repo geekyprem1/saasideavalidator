@@ -24,6 +24,9 @@ export interface AIAnalysisResult {
 export interface AISynthesisOptions {
   extractionModel?: string;
   synthesisModel?: string;
+  openrouterApiKey?: string;
+  deepseekApiKey?: string;
+  geminiApiKey?: string;
 }
 
 export class AIService {
@@ -39,8 +42,12 @@ export class AIService {
     // Artificial latency to simulate extensive AI reasoning pipeline
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    const hasOpenRouter = !!OPENROUTER_API_KEY;
-    const hasDirectKeys = !!(DEEPSEEK_API_KEY && GEMINI_API_KEY);
+    const openrouterKey = options?.openrouterApiKey || OPENROUTER_API_KEY;
+    const deepseekKey = options?.deepseekApiKey || DEEPSEEK_API_KEY;
+    const geminiKey = options?.geminiApiKey || GEMINI_API_KEY;
+
+    const hasOpenRouter = !!openrouterKey;
+    const hasDirectKeys = !!(deepseekKey && geminiKey);
 
     if (!hasOpenRouter && !hasDirectKeys) {
       return this.generateHeuristicMock(keyword, sources);
@@ -49,10 +56,10 @@ export class AIService {
     try {
       if (hasOpenRouter) {
         console.log("Routing AI synthesis pipeline via OpenRouter...");
-        return await this.executeOpenRouterPipeline(keyword, sources, options);
+        return await this.executeOpenRouterPipeline(keyword, sources, options, openrouterKey);
       } else {
         console.log("Routing AI synthesis pipeline via direct endpoints...");
-        return await this.executeRealAIPipeline(keyword, sources);
+        return await this.executeRealAIPipeline(keyword, sources, deepseekKey, geminiKey);
       }
     } catch (e) {
       console.warn("AI Pipeline failed, falling back to mock generator:", e);
@@ -66,12 +73,15 @@ export class AIService {
   private static async executeOpenRouterPipeline(
     keyword: string, 
     sources: SocialSourceResult[], 
-    options?: AISynthesisOptions
+    options?: AISynthesisOptions,
+    openrouterKey?: string
   ): Promise<AIAnalysisResult> {
     const extModel = options?.extractionModel || "deepseek/deepseek-chat";
     const synthModel = options?.synthesisModel || "google/gemini-2.5-flash";
 
     console.log(`OpenRouter configuration: Extraction=${extModel}, Synthesis=${synthModel}`);
+
+    const routerKey = openrouterKey || OPENROUTER_API_KEY;
 
     // 1. Extraction model call via OpenRouter to extract structural insights
     const deepseekPayload = {
@@ -93,7 +103,7 @@ export class AIService {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "Authorization": `Bearer ${routerKey}`,
         "HTTP-Referer": "https://saasradar-ai.vercel.app",
         "X-Title": "SaaSRadar AI"
       },
@@ -171,7 +181,7 @@ Provide a JSON response matching exactly this schema:
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "Authorization": `Bearer ${routerKey}`,
         "HTTP-Referer": "https://saasradar-ai.vercel.app",
         "X-Title": "SaaSRadar AI"
       },
@@ -202,7 +212,15 @@ Provide a JSON response matching exactly this schema:
   /**
    * Executes the pipeline using direct DeepSeek & Gemini APIs
    */
-  private static async executeRealAIPipeline(keyword: string, sources: SocialSourceResult[]): Promise<AIAnalysisResult> {
+  private static async executeRealAIPipeline(
+    keyword: string, 
+    sources: SocialSourceResult[],
+    deepseekKey?: string,
+    geminiKey?: string
+  ): Promise<AIAnalysisResult> {
+    const dsKey = deepseekKey || DEEPSEEK_API_KEY;
+    const gemKey = geminiKey || GEMINI_API_KEY;
+
     // 1. DeepSeek V3 API Call - Extract structural insights from sources
     const deepseekPayload = {
       model: "deepseek-chat",
@@ -223,7 +241,7 @@ Provide a JSON response matching exactly this schema:
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${DEEPSEEK_API_KEY}`
+        "Authorization": `Bearer ${dsKey}`
       },
       body: JSON.stringify(deepseekPayload)
     });
@@ -284,7 +302,7 @@ Provide a JSON response matching exactly this schema:
 }
 `;
 
-    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${gemKey}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -119,8 +119,18 @@ export default function SearchPage() {
       { label: 'Generating Claude Code Prompt', status: 'idle' }
     ]);
 
+    const openrouterApiKey = localStorage.getItem('saasradar_openrouter_key') || undefined;
+    const deepseekApiKey = localStorage.getItem('saasradar_deepseek_key') || undefined;
+    const geminiApiKey = localStorage.getItem('saasradar_gemini_key') || undefined;
+
     try {
-      const response = await triggerResearchAction(keyword, { extractionModel, synthesisModel });
+      const response = await triggerResearchAction(keyword, { 
+        extractionModel, 
+        synthesisModel,
+        openrouterApiKey,
+        deepseekApiKey,
+        geminiApiKey
+      });
       if (response.success && response.searchId) {
         setTimeout(() => {
           router.push(`/dashboard/reports/${response.searchId}`);
